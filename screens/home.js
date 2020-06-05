@@ -18,20 +18,20 @@ export default function Home({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [reviews, setReviews] = useState([
     {
-      title: "Zelda, Breath of Fresh Air",
-      rating: 5,
+      title: "Update old projects",
+      rating: 2,
       body: "lorem ipsum",
       key: "1",
     },
     {
-      title: "Gotta Catch Them All (again)",
-      rating: 4,
+      title: "Fix React DevTools",
+      rating: 5,
       body: "lorem ipsum",
       key: "2",
     },
     {
-      title: 'Not So "Final" Fantasy',
-      rating: 3,
+      title: "Download Yarn",
+      rating: 4,
       body: "lorem ipsum",
       key: "3",
     },
@@ -43,6 +43,12 @@ export default function Home({ navigation }) {
       return [review, ...currentReviews];
     });
     setModalOpen(false);
+  };
+
+  const pressHandler = (key) => {
+    setReviews((prevReviews) => {
+      return prevReviews.filter((review) => review.key != key);
+    });
   };
 
   return (
@@ -70,13 +76,23 @@ export default function Home({ navigation }) {
       <FlatList
         data={reviews}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ReviewDetails", item)}
-          >
-            <Card>
-              <Text style={globalStyles.titleText}>{item.title}</Text>
-            </Card>
-          </TouchableOpacity>
+          <Card>
+            <View style={styles.container}>
+              <Text
+                onPress={() => navigation.navigate("ReviewDetails", item)}
+                style={globalStyles.titleText}
+              >
+                {item.title}
+              </Text>
+              <MaterialIcons
+                onPress={() => pressHandler(item.key)}
+                name="delete"
+                style={styles.check}
+                size={18}
+                color={"#333"}
+              />
+            </View>
+          </Card>
         )}
       />
     </View>
@@ -101,4 +117,9 @@ const styles = StyleSheet.create({
   modalContent: {
     flex: 1,
   },
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  check: {},
 });
